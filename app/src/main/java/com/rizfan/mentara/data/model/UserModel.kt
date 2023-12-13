@@ -1,9 +1,10 @@
 package com.rizfan.mentara.data.model
 
 data class UserModel(
-    val id : Int,
+    val userId : Int,
     val name : String,
-    val email : String,
-    val phone : String,
+    val noTelp : String,
+    val balance : Int,
     val token : String = "",
+    val email : String,
 )

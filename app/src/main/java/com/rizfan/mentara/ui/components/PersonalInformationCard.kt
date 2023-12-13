@@ -106,7 +106,7 @@ fun PersonalInformationCard(
                         .padding(bottom = 16.dp)
                 )
                 Text(
-                    text = user.phone,
+                    text = user.noTelp,
                     fontWeight = FontWeight.Light,
                     modifier = Modifier
                         .weight(1f)
@@ -123,10 +123,11 @@ fun PersonalInformationCard(
 fun PersonalInformationCardPreview() {
     PersonalInformationCard(
         user = UserModel(
-            id = 1,
-            name = "Rizfan",
-            email = "rispan@mail.com",
-            phone = "072283234",
+            2,
+            "Rizfan",
+            "927329",
+            3,
+            email = "ueibraas"
         )
     )
 }

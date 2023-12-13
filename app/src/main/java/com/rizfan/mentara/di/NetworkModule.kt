@@ -4,11 +4,10 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-object DataStoreModule {
-
+object NetworkModule {
 //    @Provides
 //    @Singleton
-//    fun userPreference(): UserPreference {
-//        return UserPreference()
+//    fun provideApiService(): ApiService {
+//        return ApiConfig.getApiService("tes")
 //    }
 }
