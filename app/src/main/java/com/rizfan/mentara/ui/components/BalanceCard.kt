@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -40,12 +41,14 @@ fun BalanceCard(
                 color = Color(0xFFFB2528),
                 shape = RoundedCornerShape(size = 10.dp)
             )
-            .width(359.dp)
+            .height(100.dp),
+
     ){
         Row (
             modifier = modifier
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp),
-
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
+                .fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = modifier
@@ -66,7 +69,7 @@ fun BalanceCard(
                 ) {
                     Icon(
                         Icons.Outlined.AddCircle,
-                        contentDescription = "Shopping Cart",
+                        contentDescription = "Mentara Balance",
                         tint = Color(0xFFFB2528),
                         modifier = modifier
                             .width(20.dp)

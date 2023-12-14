@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -85,6 +87,12 @@ fun LoginScreen(
                 onValueChange = { text = it },
                 label = { Text("Email") },
                 placeholder = { Text("example@gmail.com") },
+                leadingIcon = {
+                    Icon(
+                        Icons.Outlined.Email,
+                        contentDescription = null
+                    )
+                },
                 shape = RoundedCornerShape(10.dp),
                 modifier = modifier
                     .fillMaxWidth()
@@ -101,10 +109,16 @@ fun LoginScreen(
                 visualTransformation =
                 if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                leadingIcon = {
+                    Icon(
+                        Icons.Outlined.Lock,
+                        contentDescription = null
+                    )
+                },
                 trailingIcon = {
                     IconButton(onClick = { passwordHidden = !passwordHidden }) {
                         val visibilityIcon =
-                            if (passwordHidden) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                            if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                         // Please provide localized description for accessibility services
                         val description = if (passwordHidden) "Show password" else "Hide password"
                         Icon(imageVector = visibilityIcon, contentDescription = description)

@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -72,6 +76,12 @@ fun RegisterScreen(
                 label = { Text("Name") },
                 placeholder = { Text("Robert...") },
                 shape = RoundedCornerShape(10.dp),
+                leadingIcon = {
+                    Icon(
+                        Icons.Outlined.Person,
+                        contentDescription = null
+                    )
+                },
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp)
@@ -84,6 +94,12 @@ fun RegisterScreen(
                 label = { Text("Phone Number") },
                 placeholder = { Text("Robert...") },
                 shape = RoundedCornerShape(10.dp),
+                leadingIcon = {
+                    Icon(
+                        Icons.Outlined.Phone,
+                        contentDescription = null
+                    )
+                },
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp)
@@ -97,6 +113,12 @@ fun RegisterScreen(
                 label = { Text("Email") },
                 placeholder = { Text("example@gmail.com") },
                 shape = RoundedCornerShape(10.dp),
+                leadingIcon = {
+                    Icon(
+                        Icons.Outlined.Email,
+                        contentDescription = null
+                    )
+                },
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp)
@@ -112,10 +134,16 @@ fun RegisterScreen(
                 visualTransformation =
                 if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                leadingIcon = {
+                    Icon(
+                        Icons.Outlined.Lock,
+                        contentDescription = null
+                    )
+                },
                 trailingIcon = {
                     IconButton(onClick = { passwordHidden = !passwordHidden }) {
                         val visibilityIcon =
-                            if (passwordHidden) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                            if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                         // Please provide localized description for accessibility services
                         val description = if (passwordHidden) "Show password" else "Hide password"
                         Icon(imageVector = visibilityIcon, contentDescription = description)
