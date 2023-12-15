@@ -28,7 +28,8 @@ import com.rizfan.mentara.ui.theme.MentaraTheme
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+
 ) {
     Column(
         modifier = modifier

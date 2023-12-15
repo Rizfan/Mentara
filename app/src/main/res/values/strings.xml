@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Mentara</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_history">Riwayat</string>
+    <string name="menu_profile">Profile</string>
+    <string name="start">Mulai</string>
+    <string name="welcoming_text">Solusi untuk kamu yang ingin mengetahui tingkat stress yang sedang kamu alami.</string>
+    <string name="welcome">Selamat Datang!</string>
+    <string name="sign_in">Sign In</string>
+    <string name="welcome_to_mentara">Welcome to Mentara!</string>
+    <string name="email">Email</string>
+    <string name="example_gmail_com">example@gmail.com</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="password">Enter password</string>
 </resources>

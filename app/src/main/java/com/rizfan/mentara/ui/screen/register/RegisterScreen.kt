@@ -29,8 +29,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -39,15 +41,17 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.rizfan.mentara.R
 import com.rizfan.mentara.ui.components.MainButton
 import com.rizfan.mentara.ui.theme.MentaraTheme
 
 @Composable
 fun RegisterScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToLogin : () -> Unit
 ) {
     Box(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = 16.dp),
     ) {
         Column(
             modifier = modifier
@@ -57,7 +61,7 @@ fun RegisterScreen(
         ) {
 
             Text(
-                text = "Sign Up",
+                text = stringResource(R.string.sign_up),
                 // Heading/H3
                 style = TextStyle(
                     fontSize = 32.sp,
@@ -90,9 +94,13 @@ fun RegisterScreen(
 
             OutlinedTextField(
                 value = noTelp,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
                 onValueChange = { noTelp = it },
                 label = { Text("Phone Number") },
-                placeholder = { Text("Robert...") },
+                placeholder = { Text("021....") },
                 shape = RoundedCornerShape(10.dp),
                 leadingIcon = {
                     Icon(
@@ -110,8 +118,12 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email") },
-                placeholder = { Text("example@gmail.com") },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                label = { Text(stringResource(R.string.email)) },
+                placeholder = { Text(stringResource(R.string.example_gmail_com)) },
                 shape = RoundedCornerShape(10.dp),
                 leadingIcon = {
                     Icon(
@@ -156,7 +168,7 @@ fun RegisterScreen(
             )
 
             MainButton(
-                text = "Sign In",
+                text = stringResource(R.string.sign_up),
                 modifier = modifier
                     .padding(top = 16.dp, bottom = 16.dp)
             ) {
@@ -187,9 +199,9 @@ fun RegisterScreen(
                         letterSpacing = 0.4.sp,
                     )
                 )
-                TextButton(onClick = {}) {
+                TextButton(onClick = {navigateToLogin()}) {
                     Text(
-                        text = "Sign in",
+                        text = stringResource(R.string.sign_in),
                         style = TextStyle(
                             fontSize = 16.sp,
                             lineHeight = 26.4.sp,
@@ -209,6 +221,8 @@ fun RegisterScreen(
 @Composable
 fun RegisterScreenPreview() {
     MentaraTheme {
-        RegisterScreen()
+        RegisterScreen(
+            navigateToLogin = {}
+        )
     }
 }

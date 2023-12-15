@@ -29,7 +29,7 @@ fun PersonalInformationCard(
     modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
-        modifier = Modifier
+        modifier = modifier
             .width(297.dp)
             .height(160.dp)
             .background(
@@ -123,7 +123,7 @@ fun PersonalInformationCard(
 fun PersonalInformationCardPreview() {
     PersonalInformationCard(
         user = UserModel(
-            2,
+            "Rizfan",
             "Rizfan",
             "927329",
             3,

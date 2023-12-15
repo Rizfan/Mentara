@@ -77,11 +77,7 @@ fun MentaraTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
-    val colors = if (!useDarkTheme) {
-        LightColors
-    } else {
-        DarkColors
-    }
+    val colors = LightColors
 
     MaterialTheme(
         colorScheme = colors,

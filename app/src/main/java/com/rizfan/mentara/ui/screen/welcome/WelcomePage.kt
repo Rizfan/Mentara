@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,25 +28,28 @@ import com.rizfan.mentara.ui.theme.MentaraTheme
 
 @Composable
 fun WelcomePage(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToLogin : () -> Unit
 ) {
     Box(
-        modifier = modifier
+        modifier = modifier.padding(horizontal = 16.dp)
     ) {
         Column(
-            modifier = modifier.fillMaxSize().padding(top = 100.dp),
+            modifier = modifier
+                .fillMaxSize()
+                .padding(top = 100.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Image(
                 painter = painterResource(id = R.drawable.draw_welcome),
-                contentDescription = "Welcome Page",
+                contentDescription = stringResource(R.string.welcome),
                 modifier = modifier
                     .width(192.dp)
                     .height(333.dp)
                     .padding(start = 16.dp, end = 16.dp, bottom = 32.dp)
             )
             Text(
-                text = "Selamat Datang!",
+                text = stringResource(R.string.welcome),
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight(700),
@@ -55,7 +59,7 @@ fun WelcomePage(
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
             )
             Text(
-                text = "Solusi untuk kamu yang ingin mengetahui tingkat stress yang sedang kamu alami.",
+                text = stringResource(R.string.welcoming_text),
                 style = TextStyle(
                     fontSize = 14.sp,
                     fontWeight = FontWeight(400),
@@ -73,8 +77,8 @@ fun WelcomePage(
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             MainButton(
-                text = "Mulai",
-                onClick = {},
+                text = stringResource(R.string.start),
+                onClick = {navigateToLogin()},
                 modifier = modifier
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
             )
@@ -87,6 +91,8 @@ fun WelcomePage(
 @Composable
 fun WelcomePagePreview() {
     MentaraTheme{
-        WelcomePage()
+        WelcomePage(
+            navigateToLogin = {}
+        )
     }
 }
