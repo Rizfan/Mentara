@@ -1,8 +1,10 @@
 package com.rizfan.mentara.ui.screen.profile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,45 +33,45 @@ import com.rizfan.mentara.ui.theme.MentaraTheme
 fun ProfileScreen(
     modifier: Modifier = Modifier
 ) {
-    Column (
+    Box(
         modifier = modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxWidth()
+            .fillMaxHeight()
     ) {
-        CenterAlignedTopAppBar(title = {
-            Text(
-                text = stringResource(R.string.menu_profile),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp),
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Center
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CenterAlignedTopAppBar(title = {
+                Text(
+                    text = stringResource(R.string.menu_profile),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center,
+                )
+            })
+            Spacer(modifier = modifier.height(32.dp))
+            Image(
+                painter = painterResource(id = R.drawable.profil),
+                contentDescription = "image description",
+                modifier = modifier
+                    .width(190.dp)
+                    .height(190.dp)
             )
-        })
-        Spacer(modifier = modifier.height(32.dp))
-        Image(
-            painter = painterResource(id = R.drawable.profil),
-            contentDescription = "image description",
-            modifier = modifier
-                .width(190.dp)
-                .height(190.dp)
-        )
-        Spacer(modifier = modifier.height(32.dp))
-        PersonalInformationCard(
-            user = UserModel(
-                name = "Rizfan",
-                email = "r",
-                noTelp = "r",
-                userId = "r",
-                balance = 4
+            Spacer(modifier = modifier.height(32.dp))
+            PersonalInformationCard(
+                user = UserModel(
+                    "Rizfan", "Rizfan", "927329", 3, email = "ueibraas"
+                )
             )
-        )
+        }
     }
 }
 
 @Composable
-@Preview(showBackground = true, device = Devices.PIXEL_4, showSystemUi = true)
+@Preview(showBackground = true, device = Devices.PIXEL_5, showSystemUi = true)
 fun ProfileScreenPreview() {
     MentaraTheme {
         ProfileScreen()

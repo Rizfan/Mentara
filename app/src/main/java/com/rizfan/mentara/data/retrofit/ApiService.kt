@@ -1,5 +1,6 @@
 package com.rizfan.mentara.data.retrofit
 
+import com.rizfan.mentara.data.response.BalanceResponse
 import com.rizfan.mentara.data.response.ChatBotResponse
 import com.rizfan.mentara.data.response.GetQuestionResponse
 import com.rizfan.mentara.data.response.ListResultResponse
@@ -32,7 +33,7 @@ interface ApiService {
     @POST("balance")
     suspend fun balance(
         @Field("balance") balance: Int
-    ): LoginResponse
+    ): BalanceResponse
 
     @GET("questions")
     suspend fun getQuestions(): GetQuestionResponse

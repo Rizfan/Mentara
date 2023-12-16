@@ -17,12 +17,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.rizfan.mentara.R
 import com.rizfan.mentara.ui.components.BalanceCard
 import com.rizfan.mentara.ui.theme.MentaraTheme
 
@@ -115,6 +117,97 @@ fun HomeScreen(
         }
     }
 }
+
+
+@Composable
+fun HomeContent(
+    modifier: Modifier = Modifier,
+){
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 16.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.greatings, "Rizfan"),
+            style = TextStyle(
+                fontSize = 26.sp,
+                fontWeight = FontWeight(700),
+                color = Color(0xFF000000),
+            ),
+            modifier = modifier.padding(top = 16.dp)
+        )
+        Text(
+            text = stringResource(R.string.how_are_you),
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight(400),
+                color = Color(0xFF848484),
+            ),
+            modifier = modifier.padding(bottom = 16.dp)
+        )
+
+        BalanceCard(
+            balance = "5",
+            onTopUpClick = { /*TODO*/ },
+        )
+
+        Text(
+            text = stringResource(R.string.check_your_self_here),
+            style = TextStyle(
+                fontSize = 20.sp,
+                fontWeight = FontWeight(700),
+                color = Color(0xFF000000),
+            ),
+            modifier = modifier.padding(top = 16.dp, bottom = 8.dp)
+        )
+
+        Button(
+            onClick = {},
+            shape = RoundedCornerShape(10.dp),
+            modifier = modifier
+                .fillMaxWidth()
+                .height(75.dp)
+                .padding(bottom = 16.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF6386FF),
+            ),
+        ){
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+
+            ) {
+                Icon(
+                    Icons.Filled.HealthAndSafety,
+                    contentDescription = stringResource(R.string.mental_health)
+                )
+                Column(modifier = modifier) {
+                    Text(
+                        text = stringResource(R.string.mental_health),
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight(700),
+                            color = Color(0xFFFFFFFF),
+                        ),
+                        modifier = modifier.padding(start = 8.dp)
+                    )
+                    Text(
+                        text = "Cek sekarang!",
+                        style = TextStyle(
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFF0F172A),
+                        ),
+                        modifier = modifier.padding(start = 8.dp)
+                    )
+
+                }
+            }
+        }
+    }
+}
+
 
 @Composable
 @Preview(

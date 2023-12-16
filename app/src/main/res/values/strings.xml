@@ -12,4 +12,8 @@
     <string name="example_gmail_com">example@gmail.com</string>
     <string name="sign_up">Sign Up</string>
     <string name="password">Enter password</string>
+    <string name="greatings">Halo, %1$d</string>
+    <string name="how_are_you">How are you?</string>
+    <string name="check_your_self_here">Check your self here!</string>
+    <string name="mental_health">Mental Health</string>
 </resources>

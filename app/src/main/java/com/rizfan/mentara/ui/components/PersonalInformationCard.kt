@@ -1,9 +1,9 @@
 package com.rizfan.mentara.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -28,91 +28,86 @@ fun PersonalInformationCard(
     user: UserModel,
     modifier: Modifier = Modifier,
 ) {
-    ElevatedCard(
-        modifier = modifier
-            .width(297.dp)
-            .height(160.dp)
-            .background(
-                color = md_theme_light_primaryContainer,
-                shape = RoundedCornerShape(size = 10.dp)
-            )
-    ) {
-        Column {
-            Text(
-                text = "Personal Infomation", style = TextStyle(
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight(700),
-                    color = Color(0xFFFB2528),
-                    textAlign = TextAlign.Center,
-                    letterSpacing = 0.3.sp,
-                ),
-                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
-            )
-            Row(
-                modifier = modifier.padding(start = 16.dp, end = 16.dp)
-            ) {
+    Box(modifier = modifier){
+        ElevatedCard(
+            modifier = Modifier
+                .width(297.dp)
+                .background(
+                    color = md_theme_light_primaryContainer,
+                    shape = RoundedCornerShape(size = 10.dp)
+                )
+        ) {
+            Column{
                 Text(
-                    text = "Name",
-                    fontWeight = FontWeight.Light,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000),
+                    text = "Personal Infomation", style = TextStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight(700),
+                        color = Color(0xFFFB2528),
+                        textAlign = TextAlign.Center,
                         letterSpacing = 0.3.sp,
                     ),
-                    modifier = Modifier
-                        .weight(1f)
-                        .wrapContentWidth(Alignment.Start)
-                        .padding(bottom = 16.dp)
+                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
                 )
-                Text(
-                    text = user.name,
-                    fontWeight = FontWeight.Light,
-                    modifier = Modifier
-                        .weight(1f)
-                        .wrapContentWidth(Alignment.End)
-                        .padding(bottom = 16.dp)
-                )
-            }
-            Row(
-                modifier = modifier.padding(start = 16.dp, end = 16.dp)
-            ) {
-                Text(
-                    text = "Email",
-                    fontWeight = FontWeight.Light,
-                    modifier = Modifier
-                        .weight(1f)
-                        .wrapContentWidth(Alignment.Start)
-                        .padding(bottom = 16.dp)
-                )
-                Text(
-                    text = user.email,
-                    fontWeight = FontWeight.Light,
-                    modifier = Modifier
-                        .weight(1f)
-                        .wrapContentWidth(Alignment.End)
-                        .padding(bottom = 16.dp)
-                )
-            }
-            Row(
-                modifier = modifier.padding(start = 16.dp, end = 16.dp)
-            ) {
-                Text(
-                    text = "Phone",
-                    fontWeight = FontWeight.Light,
-                    modifier = Modifier
-                        .weight(1f)
-                        .wrapContentWidth(Alignment.Start)
-                        .padding(bottom = 16.dp)
-                )
-                Text(
-                    text = user.noTelp,
-                    fontWeight = FontWeight.Light,
-                    modifier = Modifier
-                        .weight(1f)
-                        .wrapContentWidth(Alignment.End)
-                        .padding(bottom = 16.dp)
-                )
+                Row(
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                ) {
+                    Text(
+                        text = "Name",
+                        fontWeight = FontWeight.Light,
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(Alignment.Start)
+                            .padding(bottom = 16.dp)
+                    )
+                    Text(
+                        text = user.name,
+                        fontWeight = FontWeight.Light,
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(Alignment.End)
+                            .padding(bottom = 16.dp)
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                ) {
+                    Text(
+                        text = "Email",
+                        fontWeight = FontWeight.Light,
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(Alignment.Start)
+                            .padding(bottom = 16.dp)
+                    )
+                    Text(
+                        text = user.email,
+                        fontWeight = FontWeight.Light,
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(Alignment.End)
+                            .padding(bottom = 16.dp)
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                ) {
+                    Text(
+                        text = "Phone",
+                        fontWeight = FontWeight.Light,
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(Alignment.Start)
+                            .padding(bottom = 16.dp)
+                    )
+                    Text(
+                        text = user.noTelp,
+                        fontWeight = FontWeight.Light,
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(Alignment.End)
+                            .padding(bottom = 16.dp)
+                    )
+                }
             }
         }
     }

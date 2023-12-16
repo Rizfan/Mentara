@@ -1,4 +1,4 @@
-package com.rizfan.mentara.ui.screen.homescreen
+package com.rizfan.mentara.ui.screen.profile
 
 import androidx.lifecycle.ViewModel
 import com.rizfan.mentara.data.model.UserModel
@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class ProfileViewModel @Inject constructor(
     private val repository: MentaraRepository
-) : ViewModel(){
+) : ViewModel() {
     private val _uiState: MutableStateFlow<UiState<Flow<UserModel>>> =
         MutableStateFlow(UiState.Loading)
     val uiState: StateFlow<UiState<Flow<UserModel>>>
@@ -22,9 +22,4 @@ class HomeViewModel @Inject constructor(
     fun getUser() {
         _uiState.value = UiState.Success(repository.getSession())
     }
-
-    suspend fun logout() {
-        repository.logout()
-    }
-
 }

@@ -33,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
@@ -48,8 +49,44 @@ import com.rizfan.mentara.ui.theme.MentaraTheme
 fun LoginScreen(
     modifier: Modifier = Modifier,
     navigateToRegister : () -> Unit,
-    navigateToHome : ()-> Unit
+    navigateToHome: @Composable (() -> Unit),
 ) {
+
+    var email by rememberSaveable (stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue())
+    }
+    var password by rememberSaveable (stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue())
+    }
+    var passwordHidden by rememberSaveable { mutableStateOf(true) }
+
+    LoginContent(
+        navigateToRegister = navigateToRegister,
+        onVisiblePasswordChange = { passwordHidden = !passwordHidden },
+        emailText = email,
+        passwordText = password,
+        onEmailChange = { email = it },
+        onPasswordChange = { password = it },
+        visiblePassword = passwordHidden,
+        onLoginClick = { email, password ->
+
+        },
+    )
+}
+
+
+@Composable
+fun LoginContent(
+    modifier: Modifier = Modifier,
+    navigateToRegister : () -> Unit,
+    emailText: TextFieldValue = TextFieldValue(""),
+    passwordText: TextFieldValue = TextFieldValue(""),
+    onEmailChange: (TextFieldValue) -> Unit = {},
+    onPasswordChange: (TextFieldValue) -> Unit = {},
+    visiblePassword: Boolean = false,
+    onVisiblePasswordChange: () -> Unit,
+    onLoginClick: (email : String, password : String) -> Unit
+){
     Box(
         modifier = modifier.padding(horizontal = 16.dp),
     ){
@@ -85,11 +122,10 @@ fun LoginScreen(
                 modifier = modifier.padding(bottom = 8.dp)
             )
 
-            var text by rememberSaveable { mutableStateOf("") }
 
             OutlinedTextField(
-                value = text,
-                onValueChange = { text = it },
+                value = emailText,
+                onValueChange = onEmailChange,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
@@ -107,16 +143,13 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp)
             )
-
-            var password by rememberSaveable { mutableStateOf("") }
-            var passwordHidden by rememberSaveable { mutableStateOf(true) }
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
+                value = passwordText,
+                onValueChange = onPasswordChange,
                 singleLine = true,
                 label = { Text(stringResource(R.string.password)) },
                 visualTransformation =
-                if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
+                if (visiblePassword) PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 leadingIcon = {
                     Icon(
@@ -125,11 +158,11 @@ fun LoginScreen(
                     )
                 },
                 trailingIcon = {
-                    IconButton(onClick = { passwordHidden = !passwordHidden }) {
+                    IconButton(onClick =  onVisiblePasswordChange ) {
                         val visibilityIcon =
-                            if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                            if (visiblePassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                         // Please provide localized description for accessibility services
-                        val description = if (passwordHidden) "Show password" else "Hide password"
+                        val description = if (visiblePassword) "Show password" else "Hide password"
                         Icon(imageVector = visibilityIcon, contentDescription = description)
                     }
                 },
@@ -143,7 +176,7 @@ fun LoginScreen(
                 text = stringResource(R.string.sign_in),
                 modifier = modifier
                     .padding(top = 16.dp, bottom = 16.dp),
-                onClick = { navigateToHome() }
+                onClick = { onLoginClick(emailText.text, passwordText.text) }
             )
         }
 
@@ -169,7 +202,7 @@ fun LoginScreen(
                         letterSpacing = 0.4.sp,
                     )
                 )
-                TextButton(onClick = {navigateToRegister()}) {
+                TextButton(onClick = navigateToRegister) {
                     Text(
                         text = stringResource(R.string.sign_up),
                         style = TextStyle(
@@ -186,6 +219,7 @@ fun LoginScreen(
         }
     }
 }
+
 
 @Composable
 @Preview(showBackground = true, device = Devices.PIXEL_4, showSystemUi = true)
