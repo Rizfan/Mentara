@@ -8,6 +8,7 @@ import com.rizfan.mentara.data.response.LoginResponse
 import com.rizfan.mentara.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,11 +21,13 @@ class LoginViewModel @Inject constructor(
         get() = _uiState
     fun login(email: String, password: String) {
         viewModelScope.launch {
-            try {
-                _uiState.value = UiState.Success(repository.login(email, password))
-            }catch (e : Exception){
-                _uiState.value = UiState.Error(e.message.toString())
-            }
+            repository.login(email,password)
+                .catch {
+                    _uiState.value = UiState.Error(it.message.toString())
+                }
+                .collect{
+                    _uiState.value = UiState.Success(it)
+                }
         }
     }
 

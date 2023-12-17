@@ -1,5 +1,6 @@
 package com.rizfan.mentara.ui.screen.login
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -40,7 +42,9 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.rizfan.mentara.R
+import com.rizfan.mentara.ui.common.UiState
 import com.rizfan.mentara.ui.components.MainButton
 import com.rizfan.mentara.ui.theme.MentaraTheme
 
@@ -50,6 +54,7 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     navigateToRegister : () -> Unit,
     navigateToHome: @Composable (() -> Unit),
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
 
     var email by rememberSaveable (stateSaver = TextFieldValue.Saver) {
@@ -60,18 +65,34 @@ fun LoginScreen(
     }
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
 
-    LoginContent(
-        navigateToRegister = navigateToRegister,
-        onVisiblePasswordChange = { passwordHidden = !passwordHidden },
-        emailText = email,
-        passwordText = password,
-        onEmailChange = { email = it },
-        onPasswordChange = { password = it },
-        visiblePassword = passwordHidden,
-        onLoginClick = { email, password ->
+    viewModel.uiState.collectAsState(UiState.Loading).value.let { uiState ->
+        when (uiState) {
+            is UiState.Loading -> {
+                LoginContent(
+                    navigateToRegister = navigateToRegister,
+                    onVisiblePasswordChange = { passwordHidden = !passwordHidden },
+                    emailText = email,
+                    passwordText = password,
+                    onEmailChange = { email = it },
+                    onPasswordChange = { password = it },
+                    visiblePassword = passwordHidden,
+                    onLoginClick = { email, password ->
+                        viewModel.login(email, password)
+                    },
+                    modifier = modifier
+                )
+            }
 
-        },
-    )
+            is UiState.Success -> {
+                navigateToHome()
+            }
+
+            is UiState.Error -> {
+                Toast.makeText(null, uiState.errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 }
 
 

@@ -1,9 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
+    kotlin("kapt")
 }
 
 android {
@@ -94,10 +94,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
     implementation("androidx.room:room-runtime:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
 
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    kapt("androidx.room:room-compiler:2.6.1")
 
 }
 kapt {

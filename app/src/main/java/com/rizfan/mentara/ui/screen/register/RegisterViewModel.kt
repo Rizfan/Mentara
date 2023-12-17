@@ -7,6 +7,7 @@ import com.rizfan.mentara.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,10 +20,12 @@ class RegisterViewModel @Inject constructor(
         get() = _uiState
 
     suspend fun register(email: String,notTelp : String, name : String, password: String) {
-        try {
-            _uiState.value = UiState.Success(repository.register(email,notTelp, name, password))
-        } catch (e: Exception) {
-            _uiState.value = UiState.Error(e.message.toString())
-        }
+        repository.register(email,notTelp,name,password)
+            .catch{
+                _uiState.value = UiState.Error(it.message.toString())
+            }
+            .collect {
+                _uiState.value = UiState.Success(it)
+            }
     }
 }
