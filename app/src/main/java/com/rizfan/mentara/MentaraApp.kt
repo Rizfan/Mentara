@@ -47,11 +47,15 @@ fun MentaraApp(
 
         NavHost(
             navController = navController,
-            startDestination = Screen.Welcome.route,
+            startDestination = Screen.Home.route,
             modifier = Modifier.padding(innerPadding)
         ){
             composable(Screen.Home.route){
-                HomeScreen()
+                HomeScreen(
+                    navigateToWelcome = {
+                        navController.navigate(Screen.Welcome.route)
+                    }
+                )
             }
             composable(Screen.Profile.route){
                 ProfileScreen()

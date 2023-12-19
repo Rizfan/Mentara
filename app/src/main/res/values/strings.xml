@@ -17,4 +17,5 @@
     <string name="check_your_self_here">Check your self here!</string>
     <string name="mental_health">Mental Health</string>
     <string name="result">Berdasarkan test yang kamu lakukan,  kamu memiliki tingkat stress yang <b>%1$s!</b></string>
+    <string name="scroll_to_top">Scroll to Top</string>
 </resources>

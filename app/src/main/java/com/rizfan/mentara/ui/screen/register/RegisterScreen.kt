@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,21 +36,87 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.rizfan.mentara.R
+import com.rizfan.mentara.ui.common.UiState
 import com.rizfan.mentara.ui.components.MainButton
 import com.rizfan.mentara.ui.theme.MentaraTheme
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
+    viewModel: RegisterViewModel = hiltViewModel(),
     navigateToLogin : () -> Unit
 ) {
+    var name by rememberSaveable (stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue())
+    }
+    var noTelp by rememberSaveable (stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue())
+    }
+    var email by rememberSaveable (stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue())
+    }
+    var password by rememberSaveable (stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue())
+    }
+    var passwordHidden by rememberSaveable { mutableStateOf(true) }
+
+    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
+        when (uiState) {
+            is UiState.Loading -> {
+                RegisterContent(
+                    modifier = modifier,
+                    nameText = name,
+                    noTelpText = noTelp,
+                    emailText = email,
+                    passwordText = password,
+                    onNameChange = { name = it },
+                    onNoTelpChange = { noTelp = it },
+                    onEmailChange = { email = it },
+                    onPasswordChange = { password = it },
+                    visiblePassword = passwordHidden,
+                    onVisiblePasswordChange = { passwordHidden = !passwordHidden },
+                    navigateToLogin = navigateToLogin,
+                    onRegisterClick = { email, noTelp, name, password ->
+                        viewModel.register(email, noTelp, name, password)
+                    }
+                )
+            }
+            is UiState.Success -> {
+                navigateToLogin()
+            }
+            is UiState.Error -> {
+            }
+        }
+    }
+
+}
+
+@Composable
+fun RegisterContent(
+    modifier: Modifier = Modifier,
+    nameText: TextFieldValue = TextFieldValue(""),
+    noTelpText: TextFieldValue = TextFieldValue(""),
+    emailText: TextFieldValue = TextFieldValue(""),
+    passwordText: TextFieldValue = TextFieldValue(""),
+    onNameChange: (TextFieldValue) -> Unit = {},
+    onNoTelpChange: (TextFieldValue) -> Unit = {},
+    onEmailChange: (TextFieldValue) -> Unit = {},
+    onPasswordChange: (TextFieldValue) -> Unit = {},
+    visiblePassword: Boolean = false,
+    onVisiblePasswordChange: () -> Unit,
+    navigateToLogin : () -> Unit,
+    onRegisterClick : (email : String, noTelp : String, name : String, password : String) -> Unit
+) {
+
     Box(
         modifier = modifier.padding(horizontal = 16.dp),
     ) {
@@ -72,11 +139,9 @@ fun RegisterScreen(
                 modifier = modifier.padding(bottom = 8.dp)
             )
 
-            var name by rememberSaveable { mutableStateOf("") }
-
             OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
+                value = nameText,
+                onValueChange = onNameChange,
                 label = { Text("Name") },
                 placeholder = { Text("Robert...") },
                 shape = RoundedCornerShape(10.dp),
@@ -90,15 +155,14 @@ fun RegisterScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp)
             )
-            var noTelp by rememberSaveable { mutableStateOf("") }
 
             OutlinedTextField(
-                value = noTelp,
+                value = noTelpText,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
                 ),
-                onValueChange = { noTelp = it },
+                onValueChange = onNoTelpChange,
                 label = { Text("Phone Number") },
                 placeholder = { Text("021....") },
                 shape = RoundedCornerShape(10.dp),
@@ -113,11 +177,9 @@ fun RegisterScreen(
                     .padding(top = 16.dp)
             )
 
-            var email by rememberSaveable { mutableStateOf("") }
-
             OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
+                value = emailText,
+                onValueChange = onEmailChange,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
@@ -136,15 +198,13 @@ fun RegisterScreen(
                     .padding(top = 16.dp)
             )
 
-            var password by rememberSaveable { mutableStateOf("") }
-            var passwordHidden by rememberSaveable { mutableStateOf(true) }
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
+                value = passwordText,
+                onValueChange = onPasswordChange,
                 singleLine = true,
                 label = { Text("Enter password") },
                 visualTransformation =
-                if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
+                if (visiblePassword) PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 leadingIcon = {
                     Icon(
@@ -153,11 +213,11 @@ fun RegisterScreen(
                     )
                 },
                 trailingIcon = {
-                    IconButton(onClick = { passwordHidden = !passwordHidden }) {
+                    IconButton(onVisiblePasswordChange) {
                         val visibilityIcon =
-                            if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                            if (visiblePassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                         // Please provide localized description for accessibility services
-                        val description = if (passwordHidden) "Show password" else "Hide password"
+                        val description = if (visiblePassword) "Show password" else "Hide password"
                         Icon(imageVector = visibilityIcon, contentDescription = description)
                     }
                 },
@@ -170,10 +230,9 @@ fun RegisterScreen(
             MainButton(
                 text = stringResource(R.string.sign_up),
                 modifier = modifier
-                    .padding(top = 16.dp, bottom = 16.dp)
-            ) {
-
-            }
+                    .padding(top = 16.dp, bottom = 16.dp),
+                onClick = { onRegisterClick(emailText.text, noTelpText.text, nameText.text, passwordText.text) }
+            )
 
 
         }

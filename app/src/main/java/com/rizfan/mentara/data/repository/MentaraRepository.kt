@@ -56,7 +56,8 @@ class MentaraRepository @Inject constructor(
         return response
     }
 
-    suspend fun getQuestion() : Flow<List<ListQuestionItem>> {
+    suspend fun getQuestion(balance: Int) : Flow<List<ListQuestionItem>> {
+        balance(balance)
         return flowOf(apiService.getQuestions().listQuestion)
     }
 
