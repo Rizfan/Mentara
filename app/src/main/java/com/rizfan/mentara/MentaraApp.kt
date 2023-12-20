@@ -20,10 +20,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.rizfan.mentara.data.utils.RouteConst
 import com.rizfan.mentara.ui.navigation.NavigationItem
 import com.rizfan.mentara.ui.navigation.Screen
 import com.rizfan.mentara.ui.screen.history.HistoryScreen
@@ -31,6 +34,7 @@ import com.rizfan.mentara.ui.screen.homescreen.HomeScreen
 import com.rizfan.mentara.ui.screen.login.LoginScreen
 import com.rizfan.mentara.ui.screen.profile.ProfileScreen
 import com.rizfan.mentara.ui.screen.register.RegisterScreen
+import com.rizfan.mentara.ui.screen.result.ResultScreen
 import com.rizfan.mentara.ui.screen.welcome.WelcomePage
 
 @Composable
@@ -52,7 +56,7 @@ fun MentaraApp(
 
         NavHost(
             navController = navController,
-            startDestination = Screen.Home.route,
+            startDestination = Screen.Welcome.route,
             modifier = Modifier.padding(innerPadding)
         ){
             composable(Screen.Home.route){
@@ -94,7 +98,21 @@ fun MentaraApp(
                 )
             }
             composable(Screen.History.route){
-                HistoryScreen()
+                HistoryScreen(
+                    navigateToDetail = {resultId ->
+                        navController.navigate(Screen.Detail.createRoute(resultId))
+                    }
+                )
+            }
+            composable(
+                route = Screen.Detail.route,
+                arguments = listOf(navArgument(RouteConst.RESULT_ID) { type = NavType.IntType })
+                ){
+                val resultId = it.arguments?.getInt(RouteConst.RESULT_ID)?: -1
+                ResultScreen(
+                    resultId = resultId,
+                    navigateBack = { navController.navigateUp() },
+                )
             }
         }
 
@@ -152,7 +170,7 @@ private fun BottomBar(
 
 
 private fun topUp(context: Context) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/82256349900?text=Hallo%2C%20Aku%20ingin%20melakukan%20Top%20Up%20Mentara%20Balance!"))
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/6282256349900?text=Hallo%2C%20Aku%20ingin%20melakukan%20Top%20Up%20Mentara%20Balance!"))
 
     context.startActivity(
         intent

@@ -6,6 +6,7 @@ import com.rizfan.mentara.data.model.UserModel
 import com.rizfan.mentara.data.pref.UserPreference
 import com.rizfan.mentara.data.response.BalanceResponse
 import com.rizfan.mentara.data.response.ChatBotResponse
+import com.rizfan.mentara.data.response.DetailResultResponse
 import com.rizfan.mentara.data.response.ListQuestionItem
 import com.rizfan.mentara.data.response.ListResultResponse
 import com.rizfan.mentara.data.response.LoginResponse
@@ -63,6 +64,10 @@ class MentaraRepository @Inject constructor(
 
     suspend fun getQuestionnaireResult(point: Int) : Flow<QuestionnaireResultResponse> {
         return flowOf(apiService.getResult(point))
+    }
+
+    suspend fun getDetailResult(resultId: Int) : Flow<DetailResultResponse> {
+        return flowOf(apiService.getDetailResult(resultId))
     }
 
     suspend fun getListResult(): Flow<ListResultResponse> {

@@ -1,22 +1,27 @@
 <resources>
     <string name="app_name">Mentara</string>
     <string name="menu_home">Home</string>
-    <string name="menu_history">Riwayat</string>
+    <string name="menu_history">History</string>
+    <string name="menu_result">Result</string>
     <string name="menu_profile">Profile</string>
-    <string name="start">Mulai</string>
-    <string name="welcoming_text">Solusi untuk kamu yang ingin mengetahui tingkat stress yang sedang kamu alami.</string>
-    <string name="welcome">Selamat Datang!</string>
+    <string name="start">Get Started</string>
+    <string name="welcoming_text">A solution for those of you who want to know the level of stress you are experiencing.</string>
+    <string name="welcome">Welcome!</string>
     <string name="sign_in">Sign In</string>
     <string name="welcome_to_mentara">Welcome to Mentara!</string>
     <string name="email">Email</string>
     <string name="example_gmail_com">example@gmail.com</string>
     <string name="sign_up">Sign Up</string>
     <string name="password">Enter password</string>
-    <string name="greatings">Halo, %1$s</string>
+    <string name="greatings">Hello, %1$s</string>
     <string name="how_are_you">How are you?</string>
     <string name="check_your_self_here">Check your self here!</string>
     <string name="mental_health">Mental Health</string>
-    <string name="result">Berdasarkan test yang kamu lakukan,  kamu memiliki tingkat stress yang <b>%1$s!</b></string>
+    <string name="result">Based on the test you did,  You have <b>%1$s</b> stress levels!</string>
     <string name="scroll_to_top">Scroll to Top</string>
     <string name="menu_logout">Logout</string>
+    <string name="back">Back</string>
+    <string name="stress_level">Stress Level</string>
+    <string name="check_your_stress_level_here">Check your stress level here!</string>
+    <string name="stress_level_test_results">"Stress level test results : "</string>
 </resources>

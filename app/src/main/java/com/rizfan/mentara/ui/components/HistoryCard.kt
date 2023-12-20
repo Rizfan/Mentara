@@ -1,5 +1,6 @@
 package com.rizfan.mentara.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,22 +12,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.rizfan.mentara.R
 
 @Composable
 fun HistoryCard(
     historyDate : String,
     historyResult : String,
     modifier: Modifier = Modifier,
+    navigateToDetail:() -> Unit = {}
 ) {
     ElevatedCard(
         modifier = modifier
             .clip(RoundedCornerShape(5.dp))
             .fillMaxWidth()
             .padding(8.dp)
+            .clickable(onClick = navigateToDetail),
     ){
         Column {
             Text(
@@ -39,7 +44,7 @@ fun HistoryCard(
             )
             Row{
                 Text(
-                    text = "Hasil test tingkat Stress : ",
+                    text = stringResource(R.string.stress_level_test_results),
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = FontWeight.Light
                     ),
@@ -48,7 +53,9 @@ fun HistoryCard(
                 )
                 Text(
                     text = historyResult,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
                     modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
                 )
             }

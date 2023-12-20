@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.rizfan.mentara.R
-import com.rizfan.mentara.ui.common.UiState
+import com.rizfan.mentara.ui.common.AuthState
 import com.rizfan.mentara.ui.components.LoadingIndicator
 import com.rizfan.mentara.ui.components.MainButton
 import com.rizfan.mentara.ui.theme.MentaraTheme
@@ -72,6 +72,8 @@ fun RegisterScreen(
     }
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
 
+    val context = LocalContext.current
+
     RegisterContent(
         modifier = modifier,
         nameText = name,
@@ -90,16 +92,20 @@ fun RegisterScreen(
         }
     )
 
-    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let {uiState ->
+    viewModel.uiState.collectAsState(initial = AuthState.Unauthorized).value.let { uiState ->
         when (uiState) {
-            is UiState.Loading -> {
+            is AuthState.Loading -> {
                 LoadingIndicator()
             }
-            is UiState.Success -> {
+            is AuthState.Success -> {
+//                Toast.makeText(context, uiState.data.message, Toast.LENGTH_SHORT).show()
                 navigateToLogin()
             }
-            is UiState.Error -> {
-                Toast.makeText(LocalContext.current, "Error!", Toast.LENGTH_SHORT).show()
+            is AuthState.Error -> {
+                Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_SHORT).show()
+            }
+            is AuthState.Unauthorized -> {
+
             }
         }
     }

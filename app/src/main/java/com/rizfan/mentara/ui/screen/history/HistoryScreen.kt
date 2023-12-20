@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
 fun HistoryScreen(
     modifier: Modifier = Modifier,
     viewModel: HistoryViewModel = hiltViewModel(),
+    navigateToDetail: (Int) -> Unit,
 ) {
 
     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let {
@@ -54,7 +55,8 @@ fun HistoryScreen(
             is UiState.Success -> {
                 HistoryContent(
                     modifier = modifier,
-                    history = it.data.listResult
+                    history = it.data.listResult,
+                    navigateToDetail = navigateToDetail
                 )
             }
             is UiState.Error -> {
@@ -68,6 +70,7 @@ fun HistoryScreen(
 fun HistoryContent(
     modifier: Modifier = Modifier,
     history: List<ListResultItem?>?,
+    navigateToDetail: (Int) -> Unit,
 ) {
     Box(modifier = modifier){
         val scope = rememberCoroutineScope()
@@ -76,6 +79,7 @@ fun HistoryContent(
             derivedStateOf { listState.firstVisibleItemIndex > 0 }
         }
         LazyColumn(
+            modifier = modifier.padding(horizontal = 8.dp),
             state = listState, contentPadding = PaddingValues(bottom = 60.dp)
         ){
             stickyHeader {
@@ -84,7 +88,7 @@ fun HistoryContent(
                         text = stringResource(R.string.menu_history),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 12.dp),
+                            .padding(vertical = 16.dp),
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
@@ -104,6 +108,7 @@ fun HistoryContent(
                     HistoryCard(
                         historyDate = data?.resultDate.toString(),
                         historyResult = data?.resultQuestionnaire.toString(),
+                        navigateToDetail = { navigateToDetail(data?.resultId!!) }
                     )
                 }
             }
