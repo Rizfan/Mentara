@@ -1,6 +1,5 @@
 package com.rizfan.mentara.ui.screen.login
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,7 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.rizfan.mentara.R
-import com.rizfan.mentara.ui.common.UiState
+import com.rizfan.mentara.ui.common.AuthState
+import com.rizfan.mentara.ui.components.LoadingIndicator
 import com.rizfan.mentara.ui.components.MainButton
 import com.rizfan.mentara.ui.theme.MentaraTheme
 
@@ -64,34 +64,42 @@ fun LoginScreen(
         mutableStateOf(TextFieldValue())
     }
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
-
-    viewModel.uiState.collectAsState(UiState.Loading).value.let { uiState ->
+    LoginContent(
+        navigateToRegister = navigateToRegister,
+        onVisiblePasswordChange = { passwordHidden = !passwordHidden },
+        emailText = email,
+        passwordText = password,
+        onEmailChange = { email = it },
+        onPasswordChange = { password = it },
+        visiblePassword = passwordHidden,
+        onLoginClick = { email, password ->
+            viewModel.login(email, password)
+        },
+        modifier = modifier
+    )
+    viewModel.uiState.collectAsState(initial = AuthState.Unauthorized).value.let { uiState ->
         when (uiState) {
-            is UiState.Loading -> {
-                LoginContent(
-                    navigateToRegister = navigateToRegister,
-                    onVisiblePasswordChange = { passwordHidden = !passwordHidden },
-                    emailText = email,
-                    passwordText = password,
-                    onEmailChange = { email = it },
-                    onPasswordChange = { password = it },
-                    visiblePassword = passwordHidden,
-                    onLoginClick = { email, password ->
-                        viewModel.login(email, password)
-                    },
-                    modifier = modifier
-                )
+            is AuthState.Loading -> {
+                LoadingIndicator()
             }
 
-            is UiState.Success -> {
+            is AuthState.Success -> {
                 navigateToHome()
             }
 
-            is UiState.Error -> {
-                Toast.makeText(null, uiState.errorMessage, Toast.LENGTH_SHORT).show()
+            is AuthState.Error -> {
+            }
+
+            is AuthState.Unauthorized->{
+
+
             }
         }
     }
+
+
+
+
 
 }
 
@@ -148,7 +156,7 @@ fun LoginContent(
                 value = emailText,
                 onValueChange = onEmailChange,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
+                    keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Done
                 ),
                 label = { Text(stringResource(R.string.email)) },

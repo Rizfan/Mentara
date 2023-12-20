@@ -5,14 +5,18 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -25,7 +29,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.rizfan.mentara.R
 import com.rizfan.mentara.data.response.ListResultItem
@@ -47,7 +54,7 @@ fun HistoryScreen(
             is UiState.Success -> {
                 HistoryContent(
                     modifier = modifier,
-                    history = it.data
+                    history = it.data.listResult
                 )
             }
             is UiState.Error -> {
@@ -56,23 +63,35 @@ fun HistoryScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryContent(
     modifier: Modifier = Modifier,
-    history : List<ListResultItem>,
+    history: List<ListResultItem?>?,
 ) {
-    Box(modifier =modifier){
+    Box(modifier = modifier){
         val scope = rememberCoroutineScope()
         val listState = rememberLazyListState()
         val showButton: Boolean by remember {
             derivedStateOf { listState.firstVisibleItemIndex > 0 }
         }
-
         LazyColumn(
-            state = listState,
-            contentPadding = PaddingValues(bottom = 60.dp)
+            state = listState, contentPadding = PaddingValues(bottom = 60.dp)
         ){
-            if (history.isEmpty()){
+            stickyHeader {
+                CenterAlignedTopAppBar(title = {
+                    Text(
+                        text = stringResource(R.string.menu_history),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                })
+            }
+            if (history.isNullOrEmpty()){
                 item {
                     Text(
                         text = "Data Tidak Ada!",
@@ -83,8 +102,8 @@ fun HistoryContent(
             }else{
                 items(history) { data ->
                     HistoryCard(
-                        historyDate = data.dateResult,
-                        historyResult = data.questionnaireResult,
+                        historyDate = data?.resultDate.toString(),
+                        historyResult = data?.resultQuestionnaire.toString(),
                     )
                 }
             }

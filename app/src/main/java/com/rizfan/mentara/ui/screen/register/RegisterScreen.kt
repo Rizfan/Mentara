@@ -1,5 +1,6 @@
 package com.rizfan.mentara.ui.screen.register
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -46,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.rizfan.mentara.R
 import com.rizfan.mentara.ui.common.UiState
+import com.rizfan.mentara.ui.components.LoadingIndicator
 import com.rizfan.mentara.ui.components.MainButton
 import com.rizfan.mentara.ui.theme.MentaraTheme
 
@@ -69,34 +72,40 @@ fun RegisterScreen(
     }
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
 
-    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
+    RegisterContent(
+        modifier = modifier,
+        nameText = name,
+        noTelpText = noTelp,
+        emailText = email,
+        passwordText = password,
+        onNameChange = { name = it },
+        onNoTelpChange = { noTelp = it },
+        onEmailChange = { email = it },
+        onPasswordChange = { password = it },
+        visiblePassword = passwordHidden,
+        onVisiblePasswordChange = { passwordHidden = !passwordHidden },
+        navigateToLogin = navigateToLogin,
+        onRegisterClick = { email, noTelp, name, password ->
+            viewModel.register(name, noTelp, email, password)
+        }
+    )
+
+    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let {uiState ->
         when (uiState) {
             is UiState.Loading -> {
-                RegisterContent(
-                    modifier = modifier,
-                    nameText = name,
-                    noTelpText = noTelp,
-                    emailText = email,
-                    passwordText = password,
-                    onNameChange = { name = it },
-                    onNoTelpChange = { noTelp = it },
-                    onEmailChange = { email = it },
-                    onPasswordChange = { password = it },
-                    visiblePassword = passwordHidden,
-                    onVisiblePasswordChange = { passwordHidden = !passwordHidden },
-                    navigateToLogin = navigateToLogin,
-                    onRegisterClick = { email, noTelp, name, password ->
-                        viewModel.register(email, noTelp, name, password)
-                    }
-                )
+                LoadingIndicator()
             }
             is UiState.Success -> {
                 navigateToLogin()
             }
             is UiState.Error -> {
+                Toast.makeText(LocalContext.current, "Error!", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
+
+
 
 }
 
@@ -144,6 +153,7 @@ fun RegisterContent(
                 onValueChange = onNameChange,
                 label = { Text("Name") },
                 placeholder = { Text("Robert...") },
+                maxLines = 1,
                 shape = RoundedCornerShape(10.dp),
                 leadingIcon = {
                     Icon(
@@ -164,6 +174,7 @@ fun RegisterContent(
                 ),
                 onValueChange = onNoTelpChange,
                 label = { Text("Phone Number") },
+                maxLines = 1,
                 placeholder = { Text("021....") },
                 shape = RoundedCornerShape(10.dp),
                 leadingIcon = {
@@ -181,11 +192,12 @@ fun RegisterContent(
                 value = emailText,
                 onValueChange = onEmailChange,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
+                    keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Done
                 ),
                 label = { Text(stringResource(R.string.email)) },
                 placeholder = { Text(stringResource(R.string.example_gmail_com)) },
+                maxLines = 1,
                 shape = RoundedCornerShape(10.dp),
                 leadingIcon = {
                     Icon(
@@ -203,6 +215,7 @@ fun RegisterContent(
                 onValueChange = onPasswordChange,
                 singleLine = true,
                 label = { Text("Enter password") },
+                maxLines = 1,
                 visualTransformation =
                 if (visiblePassword) PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),

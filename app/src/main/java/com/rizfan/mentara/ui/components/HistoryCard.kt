@@ -26,6 +26,7 @@ fun HistoryCard(
         modifier = modifier
             .clip(RoundedCornerShape(5.dp))
             .fillMaxWidth()
+            .padding(8.dp)
     ){
         Column {
             Text(

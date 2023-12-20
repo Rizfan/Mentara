@@ -1,5 +1,8 @@
 package com.rizfan.mentara
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -13,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -22,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.rizfan.mentara.ui.navigation.NavigationItem
 import com.rizfan.mentara.ui.navigation.Screen
+import com.rizfan.mentara.ui.screen.history.HistoryScreen
 import com.rizfan.mentara.ui.screen.homescreen.HomeScreen
 import com.rizfan.mentara.ui.screen.login.LoginScreen
 import com.rizfan.mentara.ui.screen.profile.ProfileScreen
@@ -51,9 +56,13 @@ fun MentaraApp(
             modifier = Modifier.padding(innerPadding)
         ){
             composable(Screen.Home.route){
+                val context = LocalContext.current
                 HomeScreen(
                     navigateToWelcome = {
                         navController.navigate(Screen.Welcome.route)
+                    },
+                    onTopUpButtonClicked = {
+                        topUp(context)
                     }
                 )
             }
@@ -83,6 +92,9 @@ fun MentaraApp(
                         navController.navigate(Screen.Login.route)
                     }
                 )
+            }
+            composable(Screen.History.route){
+                HistoryScreen()
             }
         }
 
@@ -136,4 +148,13 @@ private fun BottomBar(
             )
         }
     }
+}
+
+
+private fun topUp(context: Context) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/82256349900?text=Hallo%2C%20Aku%20ingin%20melakukan%20Top%20Up%20Mentara%20Balance!"))
+
+    context.startActivity(
+        intent
+    )
 }

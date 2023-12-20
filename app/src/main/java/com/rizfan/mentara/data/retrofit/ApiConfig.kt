@@ -22,7 +22,7 @@ object ApiConfig {
             .addInterceptor(authInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("#")
+            .baseUrl("https://452ntx5s-3000.asse.devtunnels.ms/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

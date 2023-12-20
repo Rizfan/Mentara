@@ -7,7 +7,7 @@ import com.rizfan.mentara.data.pref.UserPreference
 import com.rizfan.mentara.data.response.BalanceResponse
 import com.rizfan.mentara.data.response.ChatBotResponse
 import com.rizfan.mentara.data.response.ListQuestionItem
-import com.rizfan.mentara.data.response.ListResultItem
+import com.rizfan.mentara.data.response.ListResultResponse
 import com.rizfan.mentara.data.response.LoginResponse
 import com.rizfan.mentara.data.response.QuestionnaireResultResponse
 import com.rizfan.mentara.data.response.RegisterResponse
@@ -65,7 +65,7 @@ class MentaraRepository @Inject constructor(
         return flowOf(apiService.getResult(point))
     }
 
-    suspend fun getListResult(): Flow<List<ListResultItem>> {
-        return flowOf(apiService.getResults().listResult)
+    suspend fun getListResult(): Flow<ListResultResponse> {
+        return flowOf(apiService.getResults())
     }
 }

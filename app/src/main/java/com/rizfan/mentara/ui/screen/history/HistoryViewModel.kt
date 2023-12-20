@@ -3,7 +3,7 @@ package com.rizfan.mentara.ui.screen.history
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rizfan.mentara.data.repository.MentaraRepository
-import com.rizfan.mentara.data.response.ListResultItem
+import com.rizfan.mentara.data.response.ListResultResponse
 import com.rizfan.mentara.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,8 +16,8 @@ import javax.inject.Inject
 class HistoryViewModel @Inject constructor(
     private val repository: MentaraRepository
 ): ViewModel() {
-    private val _uiState: MutableStateFlow<UiState<List<ListResultItem>>> = MutableStateFlow(UiState.Loading)
-    val uiState: StateFlow<UiState<List<ListResultItem>>>
+    private val _uiState: MutableStateFlow<UiState<ListResultResponse>> = MutableStateFlow(UiState.Loading)
+    val uiState: StateFlow<UiState<ListResultResponse>>
         get() = _uiState
 
     fun getHistory() {

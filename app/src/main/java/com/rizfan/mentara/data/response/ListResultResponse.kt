@@ -5,23 +5,23 @@ import com.google.gson.annotations.SerializedName
 data class ListResultResponse(
 
 	@field:SerializedName("listResult")
-	val listResult: List<ListResultItem>,
+	val listResult: List<ListResultItem?>? = null,
 
 	@field:SerializedName("error")
-	val error: Boolean,
+	val error: Boolean? = null,
 
 	@field:SerializedName("message")
-	val message: String
+	val message: String? = null
 )
 
 data class ListResultItem(
 
-	@field:SerializedName("idResult")
-	val idResult: String,
+	@field:SerializedName("resultId")
+	val resultId: String? = null,
 
-	@field:SerializedName("dateResult")
-	val dateResult: String,
+	@field:SerializedName("resultDate")
+	val resultDate: String? = null,
 
-	@field:SerializedName("questionnaireResult")
-	val questionnaireResult: String
+	@field:SerializedName("resultQuestionnaire")
+	val resultQuestionnaire: String? = null
 )

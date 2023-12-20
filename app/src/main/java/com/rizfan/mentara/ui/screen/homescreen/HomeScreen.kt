@@ -1,5 +1,6 @@
 package com.rizfan.mentara.ui.screen.homescreen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,9 +9,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.filled.HealthAndSafety
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +40,7 @@ import com.rizfan.mentara.ui.theme.MentaraTheme
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
+    onTopUpButtonClicked: () -> Unit,
     navigateToWelcome: () -> Unit = {}
 ) {
     viewModel.uiState.collectAsState(UiState.Loading).value.let {
@@ -46,7 +51,12 @@ fun HomeScreen(
             is UiState.Success ->{
                 HomeContent(
                     modifier = modifier,
-                    user = it.data
+                    user = it.data,
+                    onTopUpButtonClicked = onTopUpButtonClicked,
+                    onLogoutClick = {
+                        viewModel.logout()
+                        navigateToWelcome()
+                    }
                 )
             }
             is UiState.Error ->{
@@ -57,16 +67,44 @@ fun HomeScreen(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(
     modifier: Modifier = Modifier,
-    user : UserModel
+    user : UserModel,
+    onTopUpButtonClicked: () -> Unit,
+    onLogoutClick: () -> Unit = {}
 ){
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
+        CenterAlignedTopAppBar(
+            title = {
+            Text(
+                text = stringResource(R.string.app_name),
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight(700),
+                    color = Color(0xFF000000),
+                ),
+                modifier = modifier.padding(start = 16.dp)
+            )
+        },
+            navigationIcon = {
+                Icon(
+                    Icons.AutoMirrored.Outlined.Logout,
+                    contentDescription = stringResource(R.string.menu_logout),
+                    tint = Color(0xFF000000),
+                    modifier = modifier
+                        .padding(start = 16.dp)
+                        .clickable {
+                            onLogoutClick()
+                        }
+                )
+            },
+        )
         Text(
             text = stringResource(R.string.greatings, user.name),
             style = TextStyle(
@@ -87,8 +125,8 @@ fun HomeContent(
         )
 
         BalanceCard(
-            balance = "5",
-            onTopUpClick = { /*TODO*/ },
+            balance = user.balance.toString(),
+            onTopUpClick = onTopUpButtonClicked,
         )
 
         Text(
@@ -156,6 +194,8 @@ fun HomeContent(
 )
 fun HomeScreenPreview() {
     MentaraTheme {
-        HomeScreen()
+        HomeScreen(
+            onTopUpButtonClicked = {}
+        )
     }
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.rizfan.mentara.data.model.UserModel
 import com.rizfan.mentara.data.repository.MentaraRepository
 import com.rizfan.mentara.data.response.LoginResponse
-import com.rizfan.mentara.ui.common.UiState
+import com.rizfan.mentara.ui.common.AuthState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -16,20 +16,42 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val repository: MentaraRepository
 ): ViewModel(){
-    private val _uiState : MutableStateFlow<UiState<LoginResponse>> = MutableStateFlow(UiState.Loading)
-    val uiState : MutableStateFlow<UiState<LoginResponse>>
+    private val _uiState : MutableStateFlow<AuthState<LoginResponse>> = MutableStateFlow(AuthState.Unauthorized)
+    val uiState : MutableStateFlow<AuthState<LoginResponse>>
         get() = _uiState
     fun login(email: String, password: String) {
+        _uiState.value = AuthState.Loading
         viewModelScope.launch {
             repository.login(email,password)
                 .catch {
-                    _uiState.value = UiState.Error(it.message.toString())
+                    _uiState.value = AuthState.Error(it.message.toString())
                 }
                 .collect{
-                    _uiState.value = UiState.Success(it)
+                    if(!it.error){
+                        _uiState.value = AuthState.Success(it)
+                        saveSession(
+                            UserModel(
+                                userId = it.loginResult.userId,
+                                name = it.loginResult.name,
+                                email = it.loginResult.email,
+                                noTelp = it.loginResult.noTelp,
+                                token = it.loginResult.token,
+                                balance = it.loginResult.balance,
+                                isLogin = true
+                            )
+
+                        )
+                    }else{
+                        _uiState.value = AuthState.Error("Login Failed")
+                    }
+
                 }
         }
     }
 
-    suspend fun saveSession(user : UserModel) = repository.saveSession(user)
+    fun saveSession(user : UserModel) {
+        viewModelScope.launch {
+            repository.saveSession(user)
+        }
+    }
 }
