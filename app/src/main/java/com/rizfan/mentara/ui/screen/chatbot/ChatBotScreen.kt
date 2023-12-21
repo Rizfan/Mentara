@@ -48,7 +48,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.rizfan.mentara.R
 import com.rizfan.mentara.data.model.ChatUiModel
 
-
 @Composable
 fun ChatBotScreen(
     modifier: Modifier = Modifier,
@@ -177,13 +176,12 @@ fun ChatItem(message: ChatUiModel.Message) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatBox(
     onSendChatClickListener: (String) -> Unit,
     modifier: Modifier
 ) {
-    var chatBoxValue by remember { mutableStateOf(TextFieldValue("")) }
+    var chatBoxValue by remember { mutableStateOf(TextFieldValue()) }
     Row(modifier = modifier.padding(16.dp)) {
         TextField(
             value = chatBoxValue,
@@ -201,7 +199,8 @@ fun ChatBox(
             ),
             placeholder = {
                 Text(text = "Type something")
-            }
+            },
+
         )
         IconButton(
             onClick = {
