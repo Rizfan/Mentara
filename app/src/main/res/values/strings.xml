@@ -24,4 +24,7 @@
     <string name="stress_level">Stress Level</string>
     <string name="check_your_stress_level_here">Check your stress level here!</string>
     <string name="stress_level_test_results">"Stress level test results : "</string>
+    <string name="mentalbot">MentalBot</string>
+    <string name="mentalbot_description">Want to know something about Mental Health? Ask here!</string>
+    <string name="personal_infomation">Personal Infomation</string>
 </resources>

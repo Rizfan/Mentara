@@ -13,6 +13,7 @@ import com.rizfan.mentara.data.response.LoginResponse
 import com.rizfan.mentara.data.response.QuestionnaireResultResponse
 import com.rizfan.mentara.data.response.RegisterResponse
 import com.rizfan.mentara.data.retrofit.ApiService
+import com.rizfan.mentara.data.retrofit.ApiServiceML
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class MentaraRepository @Inject constructor(
     private val userPreference : UserPreference,
     private val apiService: ApiService,
-    private val chatBotDao: ChatBotDao
+    private val chatBotDao: ChatBotDao,
+    private val apiServiceML: ApiServiceML
 ){
 
     suspend fun register(name: String,noTelp : String, email: String, password: String): Flow<RegisterResponse> {
@@ -45,8 +47,8 @@ class MentaraRepository @Inject constructor(
         return flowOf(apiService.balance(balance))
     }
 
-    suspend fun chatbot(message: String) : ChatBotResponse {
-        val response = apiService.chatbot(message)
+    suspend fun chatbot(message: String) : Flow<ChatBotResponse> {
+        val response = apiServiceML.chatbot(message)
         chatBotDao.insertChatBot(
             ChatBotModel(
                 0,
@@ -54,7 +56,7 @@ class MentaraRepository @Inject constructor(
                 response.botResponse
             )
         )
-        return response
+        return flowOf(response)
     }
 
     suspend fun getQuestion(balance: Int) : Flow<List<ListQuestionItem>> {
@@ -72,5 +74,17 @@ class MentaraRepository @Inject constructor(
 
     suspend fun getListResult(): Flow<ListResultResponse> {
         return flowOf(apiService.getResults())
+    }
+
+    suspend fun chatBot(question : String): Flow<ChatBotResponse> {
+        val response = apiServiceML.chatbot(question)
+        chatBotDao.insertChatBot(
+            ChatBotModel(
+                0,
+                question,
+                response.botResponse
+            )
+        )
+        return flowOf(response)
     }
 }

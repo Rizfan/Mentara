@@ -14,6 +14,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +30,7 @@ import androidx.navigation.navArgument
 import com.rizfan.mentara.data.utils.RouteConst
 import com.rizfan.mentara.ui.navigation.NavigationItem
 import com.rizfan.mentara.ui.navigation.Screen
+import com.rizfan.mentara.ui.screen.chatbot.ChatBotScreen
 import com.rizfan.mentara.ui.screen.history.HistoryScreen
 import com.rizfan.mentara.ui.screen.homescreen.HomeScreen
 import com.rizfan.mentara.ui.screen.login.LoginScreen
@@ -52,21 +54,25 @@ fun MentaraApp(
             }
         },
         modifier = modifier
-    ) {innerPadding ->
-
+    ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Welcome.route,
+            startDestination = Screen.Home.route,
             modifier = Modifier.padding(innerPadding)
         ){
             composable(Screen.Home.route){
                 val context = LocalContext.current
                 HomeScreen(
                     navigateToWelcome = {
-                        navController.navigate(Screen.Welcome.route)
+                        LaunchedEffect(Unit) {
+                            navController.navigate(Screen.Welcome.route)
+                        }
                     },
                     onTopUpButtonClicked = {
                         topUp(context)
+                    },
+                    navigateToChatbot = {
+                        navController.navigate(Screen.Chatbot.route)
                     }
                 )
             }
@@ -80,13 +86,22 @@ fun MentaraApp(
                     }
                 )
             }
+            composable(Screen.Chatbot.route){
+                ChatBotScreen(
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
+                )
+            }
             composable(Screen.Login.route){
                 LoginScreen(
                     navigateToRegister = {
                         navController.navigate(Screen.Register.route)
                     },
                     navigateToHome = {
-                        navController.navigate(Screen.Home.route)
+                        LaunchedEffect(Unit) {
+                            navController.navigate(Screen.Home.route)
+                        }
                     }
                 )
             }
