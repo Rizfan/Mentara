@@ -33,6 +33,14 @@ fun QuestionnaireScreen(
     val radioOptions = listOf("Sangat setuju", "Setuju", "Netral", "Tidak setuju", "Sangat tidak setuju")
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
 
+    val point = when(selectedOption){
+        "Sangat setuju" -> 5
+        "Setuju" -> 4
+        "Netral" -> 3
+        "Tidak setuju" -> 2
+        else -> 1
+    }
+
     Box(modifier = modifier){
         Column(Modifier.selectableGroup()) {
             Text(

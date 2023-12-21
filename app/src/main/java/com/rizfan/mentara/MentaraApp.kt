@@ -108,6 +108,11 @@ fun MentaraApp(
             composable(Screen.Register.route){
                 RegisterScreen(
                     navigateToLogin = {
+                        LaunchedEffect(Unit) {
+                            navController.navigate(Screen.Login.route)
+                        }
+                    },
+                    onLoginClick = {
                         navController.navigate(Screen.Login.route)
                     }
                 )

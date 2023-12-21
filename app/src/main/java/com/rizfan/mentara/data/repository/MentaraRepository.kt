@@ -76,15 +76,4 @@ class MentaraRepository @Inject constructor(
         return flowOf(apiService.getResults())
     }
 
-    suspend fun chatBot(question : String): Flow<ChatBotResponse> {
-        val response = apiServiceML.chatbot(question)
-        chatBotDao.insertChatBot(
-            ChatBotModel(
-                0,
-                question,
-                response.botResponse
-            )
-        )
-        return flowOf(response)
-    }
 }

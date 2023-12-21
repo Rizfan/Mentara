@@ -56,7 +56,8 @@ import com.rizfan.mentara.ui.theme.MentaraTheme
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterViewModel = hiltViewModel(),
-    navigateToLogin : () -> Unit
+    navigateToLogin : @Composable (() -> Unit),
+    onLoginClick: () -> Unit = {}
 ) {
     var name by rememberSaveable (stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue())
@@ -86,7 +87,7 @@ fun RegisterScreen(
         onPasswordChange = { password = it },
         visiblePassword = passwordHidden,
         onVisiblePasswordChange = { passwordHidden = !passwordHidden },
-        navigateToLogin = navigateToLogin,
+        navigateToLogin = onLoginClick,
         onRegisterClick = { email, noTelp, name, password ->
             viewModel.register(name, noTelp, email, password)
         }
@@ -277,7 +278,7 @@ fun RegisterContent(
                         letterSpacing = 0.4.sp,
                     )
                 )
-                TextButton(onClick = {navigateToLogin()}) {
+                TextButton(onClick = { navigateToLogin() }) {
                     Text(
                         text = stringResource(R.string.sign_in),
                         style = TextStyle(
