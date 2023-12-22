@@ -1,30 +1,30 @@
 package com.rizfan.mentara.ui.screen.questionnaire
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.rizfan.mentara.ui.components.QuestionCard
+import com.rizfan.mentara.ui.screen.history.ScrollToTopButton
 import com.rizfan.mentara.ui.theme.MentaraTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun QuestionnaireScreen(
@@ -41,45 +41,53 @@ fun QuestionnaireScreen(
         else -> 1
     }
 
+    QuestionnaireContent(
+        modifier = modifier,
+        onOptionSelected = onOptionSelected,
+        selectedOption = selectedOption,
+        radioOptions = radioOptions
+    )
+
+}
+
+@Composable
+fun QuestionnaireContent(
+    modifier: Modifier = Modifier,
+    onOptionSelected: (String) -> Unit,
+    selectedOption: String,
+    radioOptions: List<String>
+) {
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+    val showButton: Boolean by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 0 }
+    }
     Box(modifier = modifier){
-        Column(Modifier.selectableGroup()) {
-            Text(
-                text = "Saya merasa bahagia dan puas dengan hidup saya.",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    lineHeight = 27.2.sp,
-                    fontWeight = FontWeight(700),
-                    color = Color(0xFF000000),
-                    letterSpacing = 0.5.sp,
-                ),
-                modifier = Modifier
-                    .padding(top = 32.dp, bottom = 16.dp)
-                    .padding(horizontal = 16.dp)
-            )
-            radioOptions.forEach { text ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .selectable(
-                            selected = (text == selectedOption),
-                            onClick = { onOptionSelected(text) },
-                            role = Role.RadioButton
-                        )
-                        .padding(horizontal = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    RadioButton(
-                        selected = (text == selectedOption),
-                        onClick = null // null recommended for accessibility with screenreaders
-                    )
-                    Text(
-                        text = text,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
-                }
+        LazyColumn(
+            modifier = modifier.padding(horizontal = 8.dp),
+            state = listState, contentPadding = PaddingValues(bottom = 60.dp)
+        ){
+            items(10){
+                QuestionCard(
+                    onOptionSelected = onOptionSelected,
+                    selectedOption = selectedOption,
+                    radioOptions = radioOptions
+                )
             }
+        }
+        AnimatedVisibility(
+            visible = showButton,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically(),
+            modifier = Modifier
+                .padding(bottom = 15.dp)
+                .align(Alignment.BottomCenter)
+        ) {
+            ScrollToTopButton(onClick = {
+                scope.launch {
+                    listState.scrollToItem(index = 0)
+                }
+            })
         }
     }
 }

@@ -35,6 +35,7 @@ import com.rizfan.mentara.ui.screen.history.HistoryScreen
 import com.rizfan.mentara.ui.screen.homescreen.HomeScreen
 import com.rizfan.mentara.ui.screen.login.LoginScreen
 import com.rizfan.mentara.ui.screen.profile.ProfileScreen
+import com.rizfan.mentara.ui.screen.questionnaire.QuestionnaireScreen
 import com.rizfan.mentara.ui.screen.register.RegisterScreen
 import com.rizfan.mentara.ui.screen.result.ResultScreen
 import com.rizfan.mentara.ui.screen.welcome.WelcomePage
@@ -85,6 +86,9 @@ fun MentaraApp(
                         navController.navigate(Screen.Login.route)
                     }
                 )
+            }
+            composable(Screen.Question.route){
+                QuestionnaireScreen()
             }
             composable(Screen.Chatbot.route){
                 ChatBotScreen(
@@ -190,7 +194,7 @@ private fun BottomBar(
 
 
 private fun topUp(context: Context) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/6282256349900?text=Hallo%2C%20Aku%20ingin%20melakukan%20Top%20Up%20Mentara%20Balance!"))
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.whatsapp_link)))
 
     context.startActivity(
         intent

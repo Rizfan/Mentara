@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -151,6 +152,9 @@ fun ChatItem(message: ChatUiModel.Message) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
+            .clickable{
+
+            }
     ) {
         Box(
             modifier = Modifier
@@ -182,6 +186,7 @@ fun ChatBox(
     modifier: Modifier
 ) {
     var chatBoxValue by remember { mutableStateOf(TextFieldValue()) }
+    val keyboardController = LocalSoftwareKeyboardController.current
     Row(modifier = modifier.padding(16.dp)) {
         TextField(
             value = chatBoxValue,
@@ -190,7 +195,10 @@ fun ChatBox(
             },
             modifier = Modifier
                 .weight(1f)
-                .padding(4.dp),
+                .padding(4.dp)
+                .clickable{
+                    keyboardController?.show()
+                },
             shape = RoundedCornerShape(24.dp),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
@@ -198,8 +206,8 @@ fun ChatBox(
                 disabledIndicatorColor = Color.Transparent,
             ),
             placeholder = {
-                Text(text = "Type something")
-            },
+                Text(text = "Type something...")
+            }
 
         )
         IconButton(

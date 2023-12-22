@@ -75,5 +75,4 @@ class MentaraRepository @Inject constructor(
     suspend fun getListResult(): Flow<ListResultResponse> {
         return flowOf(apiService.getResults())
     }
-
 }
